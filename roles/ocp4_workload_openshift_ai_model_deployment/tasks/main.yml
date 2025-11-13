@@ -1,0 +1,16 @@
+---
+- name: Create AI BU Shared Namespace
+  kubernetes.core.k8s:
+    state: present
+    api_version: v1
+    kind: Namespace
+    name: "{{ ocp4_workload_openshift_ai_model_deployment_namespace }}"
+
+- name: Create Model Deployment
+  kubernetes.core.k8s:
+    template: "{{ item }}"
+    namespace: "{{ ocp4_workload_openshift_ai_model_deployment_namespace }}"
+  loop:
+  - llama-32-3b-instruct-secret.yaml.j2
+  - llama-32-3b-instruct-serving-runtime.yaml.j2
+  - llama-32-3b-instruct-inference-service.yaml.j2

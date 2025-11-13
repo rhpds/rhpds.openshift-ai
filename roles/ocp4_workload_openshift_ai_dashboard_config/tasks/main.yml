@@ -1,0 +1,10 @@
+---
+- name: Create OpenShift AI Dashboard Config
+  kubernetes.core.k8s:
+    state: present
+    template: odh-dashboard-config.yaml.j2
+
+- name: Create GPU Hardware Profile
+  kubernetes.core.k8s:
+    state: present
+    template: gpu-hardware-profile.yaml.j2
