@@ -1,5 +1,5 @@
 ---
-- name: Create AI BU Shared Namespace
+- name: Create amespace for hosting model
   kubernetes.core.k8s:
     state: present
     api_version: v1
