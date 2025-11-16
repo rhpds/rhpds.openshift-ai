@@ -53,7 +53,7 @@
     msg: |
       Test the LLM endpoint with a simple curl request:
 
-      curl https://inference-gateway.{{ _ocp4_workload_openshift_ai_model_deployment_ingress_domain }}/llama-32-3b-instruct/v1/completions \
+      curl https://inference-gateway.{{ _ocp4_workload_openshift_ai_model_deployment_ingress_domain }}/v1/completions \
         -H "Content-Type: application/json" \
         -H "X-Model: llama-32-3b-instruct" \
         -d '{
