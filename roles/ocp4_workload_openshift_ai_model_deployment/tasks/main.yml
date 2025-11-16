@@ -47,3 +47,18 @@
     msg: "{{ item }}"
   loop:
   - "Llama inference endpoint: https://inference-gateway.{{ _ocp4_workload_openshift_ai_model_deployment_ingress_domain }}/llama-32-3b-instruct"
+
+- name: LLM Endpoint Test
+  rhpds.openshift_ai.agnosticd_user_info:
+    msg: |
+      Test the LLM endpoint with a simple curl request:
+
+      curl https://inference-gateway.{{ _ocp4_workload_openshift_ai_model_deployment_ingress_domain }}/llama-32-3b-instruct/v1/completions \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -d '{
+          "model": "llama-32-3b-instruct",
+          "prompt": "Write a short greeting message:",
+          "max_tokens": 100,
+          "temperature": 0.7
+        }'
