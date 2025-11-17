@@ -1,0 +1,7 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default-address-pool
+spec:
+  addresses:
+    - {{ _ocp4_workload_metal_lb_node_ip_subnet }}.200-{{ _ocp4_workload_metal_lb_node_ip_subnet }}.210
