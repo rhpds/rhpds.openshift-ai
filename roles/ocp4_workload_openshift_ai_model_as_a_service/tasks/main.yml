@@ -37,7 +37,7 @@
 - name: Save user data
   agnosticd.core.agnosticd_user_info:
     msg: |
-      LLM Endpoint: http://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}
+      LLM Endpoint: https://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}
       Model Name: {{ item.spec.model.name }}
       API Key: {{ _ocp4_workload_openshift_ai_model_as_a_service_maas_api_key }}
       {{ "\n" }}
