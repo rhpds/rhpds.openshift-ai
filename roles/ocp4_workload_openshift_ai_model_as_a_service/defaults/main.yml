@@ -2,6 +2,10 @@
 ocp4_workload_openshift_ai_model_as_a_service_helm_repo: https://github.com/treddy08/model-as-a-service.git
 ocp4_workload_openshift_ai_model_as_a_service_helm_repo_target_revision: main
 ocp4_workload_openshift_ai_model_as_a_service_maas_username: maas-user
+ocp4_workload_openshift_ai_model_as_a_service_api_users:
+- username: api-user-1
+  apiKey: notsecureenough
+  tier: tier-free-users
 ocp4_workload_openshift_ai_model_as_a_service_models:
 - apiVersion: serving.kserve.io/v1alpha1
   kind: LLMInferenceService
