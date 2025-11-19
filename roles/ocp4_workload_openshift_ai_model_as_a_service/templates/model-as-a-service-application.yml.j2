@@ -16,7 +16,6 @@ spec:
   source:
     helm:
       valuesObject:
-      parameters:
         clusterDomain: {{ openshift_cluster_ingress_domain }}
         maasUser:
           username: {{ ocp4_workload_openshift_ai_model_as_a_service_maas_username }}
