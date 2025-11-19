@@ -37,8 +37,17 @@
 - name: Save user data
   agnosticd.core.agnosticd_user_info:
     msg: |
-      LLM Endpoint: https://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}
-      Model Name: {{ item.spec.model.name }}
-      API Key: {{ _ocp4_workload_openshift_ai_model_as_a_service_maas_api_key }}
+      MODEL_URL=https://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}
+      MODEL_NAME={{ item.spec.model.name }}
+      API_KEY={{ _ocp4_workload_openshift_ai_model_as_a_service_maas_api_key }}
+      curl -sSk \
+      -H "API-KEY: ${API_KEY}" \
+      -H "Content-Type: application/json" \
+      -d "{
+        \"model\": \"${MODEL_NAME}\",
+        \"prompt\": \"Hello\",
+        \"max_tokens\": 50
+      }" \
+      "${MODEL_URL}/v1/completions"
       {{ "\n" }}
   loop: "{{ r_inference_services.resources }}"
