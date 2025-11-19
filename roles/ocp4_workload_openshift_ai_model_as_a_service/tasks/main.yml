@@ -55,5 +55,6 @@
     msg: |
       API_USER="{{ item.metadata.annotations['user.authorino.kuadrant.io/userid'] }}"
       API_KEY={{ item.data.api_key | b64decode }}
+      TIER="{{ item.metadata.annotations['user.authorino.kuadrant.io/groups'] }}"
 
   loop: "{{ r_api_secrets.resources }}"
