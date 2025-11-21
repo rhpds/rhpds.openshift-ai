@@ -41,15 +41,9 @@
 - name: Inference Service data
   agnosticd.core.agnosticd_user_info:
     data:
-      inference_services: >-
-        [
-        {% for svc in r_inference_services.resources %}
-        {
-          'model_url': 'https://maas.{{ openshift_cluster_ingress_domain }}/{{ svc.metadata.namespace }}/{{ svc.metadata.name }}',
-          'model_name': '{{ svc.spec.model.name }}'
-        }{{ ',' if not loop.last else '' }}
-        {% endfor %}
-        ]
+      "{{ item.spec.model.name }}":
+        model_url: "https://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}"
+  loop: "{{ r_inference_services.resources }}"
 
 - name: Generate API user data
   agnosticd.core.agnosticd_user_info:
