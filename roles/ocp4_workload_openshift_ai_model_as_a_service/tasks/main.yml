@@ -38,12 +38,38 @@
       - authorino.kuadrant.io/managed-by=authorino
   register: r_api_secrets
 
+- name: Generate Inference Service and API user data
+  ansible.builtin.set_fact:
+    _ocp4_workload_openshift_ai_model_as_a_service_inference_services: >-
+      [
+      {% for svc in r_inference_services.resources %}
+      {
+        'model_url': 'https://maas.{{ openshift_cluster_ingress_domain }}/{{ svc.metadata.namespace }}/{{ svc.metadata.name }}',
+        'model_name': '{{ svc.spec.model.name }}'
+      }{{ ',' if not loop.last else '' }}
+      {% endfor %}
+      ]
+    _ocp4_workload_openshift_ai_model_as_a_service_api_users: >-
+      [
+      {% for user in r_api_secrets.resources %}
+      {
+        'username': '{{ user.metadata.annotations['user.authorino.kuadrant.io/userid'] }}',
+        'api_key': '{{ user.data.api_key | b64decode }}',
+        'tier': '{{ user.metadata.annotations['user.authorino.kuadrant.io/groups'] }}'
+      }{{ ',' if not loop.last else '' }}
+      {% endfor %}
+
+- name: Inference Service data
+  agnosticd.core.agnosticd_user_info:
+    data:
+      inference_services: "{{ _ocp4_workload_openshift_ai_model_as_a_service_inference_services }}"
+      api_users: "{{ _ocp4_workload_openshift_ai_model_as_a_service_api_users }}"
+
 - name: Print Inference Service data
   agnosticd.core.agnosticd_user_info:
     msg: |
       MODEL_URL=https://maas.{{ openshift_cluster_ingress_domain }}/{{ item.metadata.namespace }}/{{ item.metadata.name }}
       MODEL_NAME={{ item.spec.model.name }}
-
   loop: "{{ r_inference_services.resources }}"
 
 - name: Print API user data
@@ -52,7 +78,6 @@
       API_USER={{ item.metadata.annotations['user.authorino.kuadrant.io/userid'] }}
       API_KEY={{ item.data.api_key | b64decode }}
       TIER={{ item.metadata.annotations['user.authorino.kuadrant.io/groups'] }}
-
   loop: "{{ r_api_secrets.resources }}"
 
 - name: Print example curl data
